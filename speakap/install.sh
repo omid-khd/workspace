@@ -22,3 +22,15 @@ else
     echo "Failed to install Homebrew. Please try again."
     exit 1
 fi
+
+# Install Git using Homebrew
+echo "Installing Git via Homebrew..."
+brew install git
+
+# Verify Git installation
+if command -v git &>/dev/null; then
+    echo "Git has been successfully installed."
+else
+    echo "Failed to install Git via Homebrew. Please try again."
+    exit 1
+fi
