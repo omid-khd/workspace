@@ -139,3 +139,21 @@ else
         exit 1
     fi
 fi
+
+if brew list --cask | grep -q "atuin"; then
+    echo "Atuin is already installed."
+else
+    echo "Atuin is not installed. Proceeding with installation..."
+
+    # Install Atuin using Homebrew
+    echo "Installing Atuin via Homebrew..."
+    brew install --cask atuin
+
+    # Verify installation
+    if brew list --cask | grep -q "atuin"; then
+        echo "Atuin has been successfully installed."
+    else
+        echo "Failed to install Atuin via Homebrew. Please try again."
+        exit 1
+    fi
+fi
