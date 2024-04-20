@@ -29,8 +29,9 @@ if ! command -v git &>/dev/null; then
     echo "Git has been successfully installed."
 
     if ! command -v git &>/dev/null; then
-    echo "Failed to install Git via Homebrew. Please try again."
-    exit 1
+        echo "Failed to install Git via Homebrew. Please try again."
+        exit 1
+    fi
 else
     echo "Git already installed"
 fi
