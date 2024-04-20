@@ -10,16 +10,16 @@ if ! command -v brew &>/dev/null; then
     # Add Homebrew to PATH
     echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/$(whoami)/.zprofile
     eval "$(/opt/homebrew/bin/brew shellenv)"
+
+    # Verify Homebrew installation
+    if command -v brew &>/dev/null; then
+        echo "Homebrew has been successfully installed."
+    else
+        echo "Failed to install Homebrew. Please try again."
+        exit 1
+    fi
 else
     echo "Homebrew is already installed."
-fi
-
-# Verify Homebrew installation
-if command -v brew &>/dev/null; then
-    echo "Homebrew has been successfully installed."
-else
-    echo "Failed to install Homebrew. Please try again."
-    exit 1
 fi
 
 # Install Git using Homebrew
@@ -33,7 +33,7 @@ if ! command -v git &>/dev/null; then
         exit 1
     fi
 else
-    echo "Git already installed"
+    echo "Git is already installed"
 fi
 
 # Check if Bitwarden is already installed
