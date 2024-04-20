@@ -140,14 +140,14 @@ else
     fi
 fi
 
-if brew list --cask | grep -q "atuin"; then
+if command -v atuin &>/dev/null ; then
     echo "Atuin is already installed."
 else
     echo "Atuin is not installed. Proceeding with installation..."
 
     # Install Atuin using Homebrew
     echo "Installing Atuin..."
-    bash <(curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh)
+    curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh | bash
 
     # Verify installation
     if brew list --cask | grep -q "atuin"; then
