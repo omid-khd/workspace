@@ -157,3 +157,20 @@ else
         exit 1
     fi
 fi
+
+if brew list --formula | grep -q "bat"; then
+    echo "bat is already installed."
+else
+    echo "bat is not installed. Proceeding with installation..."
+    echo "Installing bat via Homebrew..."
+
+    brew install bat
+
+    # Verify installation
+    if brew list --formula | grep -q "bat"; then
+        echo "bat has been successfully installed."
+    else
+        echo "Failed to install bat via Homebrew. Please try again."
+        exit 1
+    fi
+fi
