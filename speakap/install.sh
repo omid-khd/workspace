@@ -35,3 +35,18 @@ if ! command -v git &>/dev/null; then
 else
     echo "Git already installed"
 fi
+
+# Install PhpStorm
+if [ -d "/Applications/PhpStorm.app" ]; then
+    echo "PhpStorm is already installed."
+else
+    echo "Installing PhpStorm via Homebrew..."
+    brew install --cask phpstorm
+
+    if [ -d "/Applications/PhpStorm.app" ]; then
+        echo "PhpStorm has been successfully installed."
+    else
+        echo "Failed to install PhpStorm via Homebrew. Please try again."
+        exit 1
+    fi
+fi
