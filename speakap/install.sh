@@ -88,3 +88,21 @@ else
         exit 1
     fi
 fi
+
+if brew list --cask | grep -q "maccy"; then
+    echo "Maccy is already installed."
+else
+    echo "Maccy is not installed. Proceeding with installation..."
+
+    # Install Maccy using Homebrew
+    echo "Installing Maccy via Homebrew..."
+    brew install --cask maccy
+
+    # Verify installation
+    if brew list --cask | grep -q "maccy"; then
+        echo "Maccy has been successfully installed."
+    else
+        echo "Failed to install Maccy via Homebrew. Please try again."
+        exit 1
+    fi
+fi
