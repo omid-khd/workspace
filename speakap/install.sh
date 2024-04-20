@@ -36,6 +36,25 @@ else
     echo "Git already installed"
 fi
 
+# Check if Bitwarden is already installed
+if [ -d "/Applications/PhpStorm.app" ]; then
+    echo "Bitwarden is already installed."
+else
+    echo "Bitwarden is not installed. Proceeding with installation..."
+
+    # Install Bitwarden using Homebrew
+    echo "Installing Bitwarden via Homebrew..."
+    brew install --cask bitwarden
+
+    # Verify installation
+    if brew list --cask | grep -q "bitwarden"; then
+        echo "Bitwarden has been successfully installed."
+    else
+        echo "Failed to install Bitwarden via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
 # Install PhpStorm
 if [ -d "/Applications/PhpStorm.app" ]; then
     echo "PhpStorm is already installed."
