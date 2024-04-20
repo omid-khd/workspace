@@ -106,3 +106,36 @@ else
         exit 1
     fi
 fi
+
+if [ -d "/Applications/iTerm.app" ]; then
+    echo "iTerm2 is already installed."
+else
+    echo "iTerm2 is not installed. Proceeding with installation..."
+
+    # Install iTerm2 using Homebrew
+    echo "Installing iTerm2 via Homebrew..."
+    brew install --cask iterm2
+    # Verify installation
+    if [ -d "/Applications/iTerm.app" ]; then
+        echo "iTerm2 has been successfully installed."
+    else
+        echo "Failed to install iTerm2 via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
+if [ -d "$HOME/.oh-my-zsh" ]; then
+    echo "Oh My Zsh is already installed."
+else
+    echo "Oh My Zsh is not installed. Proceeding with installation..."
+    # Install Oh My Zsh
+    echo "Installing Oh My Zsh..."
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    # Verify installation
+    if [ -d "$HOME/.oh-my-zsh" ]; then
+        echo "Oh My Zsh has been successfully installed."
+    else
+        echo "Failed to install Oh My Zsh. Please try again."
+        exit 1
+    fi
+fi
