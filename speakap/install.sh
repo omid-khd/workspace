@@ -50,3 +50,22 @@ else
         exit 1
     fi
 fi
+
+# Check if Google Chrome is already installed
+if [ -d "/Applications/Google Chrome.app" ]; then
+    echo "Google Chrome is already installed."
+else
+    echo "Google Chrome is not installed. Proceeding with installation..."
+
+    # Install Google Chrome using Homebrew
+    echo "Installing Google Chrome via Homebrew..."
+    brew install --cask google-chrome
+
+    # Verify installation
+    if [ -d "/Applications/Google Chrome.app" ]; then
+        echo "Google Chrome has been successfully installed."
+    else
+        echo "Failed to install Google Chrome via Homebrew. Please try again."
+        exit 1
+    fi
+fi
