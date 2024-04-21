@@ -291,3 +291,19 @@ else
         exit 1
     fi
 fi
+
+if brew list --cask | grep -q "devtoys"; then
+    echo "devToys is already installed."
+else
+    echo "devToys is not installed. Proceeding with installation..."
+    echo "Installing devToys via Homebrew..."
+    brew install --cask devtoys
+
+    # Verify installation
+    if brew list --cask | grep -q "devtoys"; then
+        echo "devToys has been successfully installed."
+    else
+        echo "Failed to install devToys via Homebrew. Please try again."
+        exit 1
+    fi
+fi
