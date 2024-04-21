@@ -196,6 +196,7 @@ if brew list --formula | grep -q "php@8.2"; then
     echo "PHP 8.2 is already installed."
 else
     echo "PHP 8.2 is not installed. Proceeding with installation..."
+    echo "Installing php8.2 via Homebrew..."
     brew install php@8.2
 
     # Verify installation
@@ -211,3 +212,18 @@ else
     fi
 fi
 
+if brew list --cask | grep -q "another-redis-desktop-manager"; then
+    echo "Another Redis Desktop Manager is already installed."
+else
+    echo "Another Redis Desktop Manager is not installed. Proceeding with installation..."
+    echo "Installing Another Redis Desktop Manager via Homebrew..."
+    brew install --cask another-redis-desktop-manager
+
+    # Verify installation
+    if brew list --cask | grep -q "another-redis-desktop-manager"; then
+        echo "Another Redis Desktop Manager has been successfully installed."
+    else
+        echo "Failed to install Another Redis Desktop Manager via Homebrew. Please try again."
+        exit 1
+    fi
+fi
