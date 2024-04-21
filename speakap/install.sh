@@ -275,3 +275,19 @@ else
         exit 1
     fi
 fi
+
+if brew list --cask | grep -q "postman"; then
+    echo "Postman is already installed."
+else
+    echo "Postman is not installed. Proceeding with installation..."
+    echo "Installing Postman via Homebrew..."
+    brew install --cask postman
+
+    # Verify installation
+    if brew list --cask | grep -q "postman"; then
+        echo "Postman has been successfully installed."
+    else
+        echo "Failed to install Postman via Homebrew. Please try again."
+        exit 1
+    fi
+fi
