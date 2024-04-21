@@ -178,7 +178,6 @@ fi
 # Install tldr using Homebrew
 if brew list --formula | grep -q "tldr"; then
     echo "tldr is already installed."
-    exit 0
 else
     echo "tldr is not installed. Proceeding with installation..."
     echo "Installing tldr via Homebrew..."
