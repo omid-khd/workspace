@@ -211,28 +211,3 @@ else
     fi
 fi
 
-# Check if GitHub Desktop is already installed
-if [ -d "/Applications/GitHub Desktop.app" ]; then
-    echo "GitHub Desktop is already installed."
-else
-    architecture=$(uname -m)
-    download_url="https://desktop.githubusercontent.com/github-desktop/releases/3.3.14-b6c1402e/GitHubDesktop-arm64.zip"
-
-    if [ "$architecture" == "x86_64" ]; then
-        download_url="https://desktop.githubusercontent.com/github-desktop/releases/3.3.14-b6c1402e/GitHubDesktop-x64.zip"
-    fi
-
-    echo "GitHub Desktop is not installed. Proceeding with installation..."
-    curl -fsSL "$download_url" -o /tmp/GitHubDesktop.zip
-    echo "Installing GitHub Desktop..."
-    unzip -q /tmp/GitHubDesktop.zip -d /Applications/
-
-    # Verify installation
-    if [ -d "/Applications/GitHub Desktop.app" ]; then
-        rm -rf /tmp/GitHubDesktop.zip
-        echo "GitHub Desktop has been successfully installed."
-    else
-        echo "Failed to install GitHub Desktop. Please try again."
-        exit 1
-    fi
-fi
