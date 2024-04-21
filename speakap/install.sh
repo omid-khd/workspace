@@ -200,6 +200,9 @@ else
 
     # Verify installation
     if brew list --formula | grep -q "php@8.2"; then
+        brew install imagemagick
+        brew link --force php@8.2
+        pecl install xdebug-3.3.1 imagick
         echo "PHP 8.2 has been successfully installed."
     else
         echo "Failed to install PHP 8.2 via Homebrew. Please try again."
