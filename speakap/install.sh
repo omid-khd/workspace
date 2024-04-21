@@ -223,6 +223,7 @@ else
     fi
 
     echo "GitHub Desktop is not installed. Proceeding with installation..."
+    echo "Downloading $download_url"
     curl -fsSL "$download_url" -o /tmp/GitHubDesktop.zip
     echo "Installing GitHub Desktop..."
     unzip -q /tmp/GitHubDesktop.zip -d /Applications/
