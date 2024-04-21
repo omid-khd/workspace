@@ -117,11 +117,6 @@ else
     brew install --cask iterm2
     # Verify installation
     if [ -d "/Applications/iTerm.app" ]; then
-        git clone https://github.com/zplug/zplug ~/.zplug
-        echo "source ~/.zplug/init.zsh" >> ~/.zshrc
-        echo "zplug \"zplug/zplug\", as:plugin" >> ~/.zshrc
-        echo "zplug load" >> ~/.zshrc
-        source ~/.zshrc
         echo "iTerm2 has been successfully installed."
     else
         echo "Failed to install iTerm2 via Homebrew. Please try again."
@@ -138,6 +133,11 @@ else
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     # Verify installation
     if [ -d "$HOME/.oh-my-zsh" ]; then
+    git clone https://github.com/zplug/zplug ~/.zplug
+        echo "source ~/.zplug/init.zsh" >> ~/.zshrc
+        echo "zplug \"zplug/zplug\", as:plugin" >> ~/.zshrc
+        echo "zplug load" >> ~/.zshrc
+        source ~/.zshrc
         echo "Oh My Zsh has been successfully installed."
     else
         echo "Failed to install Oh My Zsh. Please try again."
