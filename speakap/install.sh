@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Check if Homebrew is already installed
+
 if ! command -v brew &>/dev/null; then
     echo "Homebrew is not installed. Proceeding with installation..."
 
@@ -22,7 +22,7 @@ else
     echo "Homebrew is already installed."
 fi
 
-# Install Git using Homebrew
+
 if ! command -v git &>/dev/null; then
     echo "Installing Git via Homebrew..."
     brew install git
@@ -36,7 +36,7 @@ else
     echo "Git is already installed"
 fi
 
-# Check if Bitwarden is already installed
+
 if [ -d "/Applications/PhpStorm.app" ]; then
     echo "Bitwarden is already installed."
 else
@@ -70,7 +70,7 @@ else
     fi
 fi
 
-# Check if Google Chrome is already installed
+
 if [ -d "/Applications/Google Chrome.app" ]; then
     echo "Google Chrome is already installed."
 else
@@ -224,6 +224,54 @@ else
         echo "Another Redis Desktop Manager has been successfully installed."
     else
         echo "Failed to install Another Redis Desktop Manager via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
+if brew list --cask | grep -q "dbeaver-community"; then
+    echo "DBeaver is already installed."
+else
+    echo "DBeaver is not installed. Proceeding with installation..."
+    echo "Installing DBeaver via Homebrew..."
+    brew install --cask dbeaver-community
+
+    # Verify installation
+    if brew list --cask | grep -q "dbeaver-community"; then
+        echo "DBeaver has been successfully installed."
+    else
+        echo "Failed to install DBeaver via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
+if brew list --cask | grep -q "vlc"; then
+    echo "VLC is already installed."
+else
+    echo "VLC is not installed. Proceeding with installation..."
+    echo "Installing VLC via Homebrew..."
+    brew install --cask vlc
+
+    # Verify installation
+    if brew list --cask | grep -q "vlc"; then
+        echo "VLC has been successfully installed."
+    else
+        echo "Failed to install VLC via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
+if brew list --cask | grep -q "folx"; then
+    echo "Folx is already installed."
+else
+    echo "Folx is not installed. Proceeding with installation..."
+    echo "Installing Folx via Homebrew..."
+    brew install --cask folx
+
+    # Verify installation
+    if brew list --cask | grep -q "folx"; then
+        echo "Folx has been successfully installed."
+    else
+        echo "Failed to install Folx via Homebrew. Please try again."
         exit 1
     fi
 fi
