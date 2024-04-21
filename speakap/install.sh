@@ -192,3 +192,18 @@ else
         exit 1
     fi
 fi
+
+if brew list --formula | grep -q "php@8.2"; then
+    echo "PHP 8.2 is already installed."
+else
+    echo "PHP 8.2 is not installed. Proceeding with installation..."
+    brew install php@8.2
+
+    # Verify installation
+    if brew list --formula | grep -q "php@8.2"; then
+        echo "PHP 8.2 has been successfully installed."
+    else
+        echo "Failed to install PHP 8.2 via Homebrew. Please try again."
+        exit 1
+    fi
+fi
