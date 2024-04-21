@@ -210,3 +210,22 @@ else
         exit 1
     fi
 fi
+
+# Check if GitHub Desktop is already installed
+if [ -d "/Applications/GitHub Desktop.app" ]; then
+    echo "GitHub Desktop is already installed."
+else
+    echo "GitHub Desktop is not installed. Proceeding with installation..."
+    curl -fsSL https://desktop.githubusercontent.com/releases/latest/download/GitHubDesktop.zip -o /tmp/GitHubDesktop.zip
+    echo "Installing GitHub Desktop..."
+    unzip -q /tmp/GitHubDesktop.zip -d /Applications/
+
+    # Verify installation
+    if [ -d "/Applications/GitHub Desktop.app" ]; then
+        rm -rf /tmp/GitHubDesktop.zip
+        echo "GitHub Desktop has been successfully installed."
+    else
+        echo "Failed to install GitHub Desktop. Please try again."
+        exit 1
+    fi
+fi
