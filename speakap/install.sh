@@ -117,6 +117,11 @@ else
     brew install --cask iterm2
     # Verify installation
     if [ -d "/Applications/iTerm.app" ]; then
+        git clone https://github.com/zplug/zplug ~/.zplug
+        echo "source ~/.zplug/init.zsh" >> ~/.zshrc
+        echo "zplug \"zplug/zplug\", as:plugin" >> ~/.zshrc
+        echo "zplug load" >> ~/.zshrc
+        source ~/.zshrc
         echo "iTerm2 has been successfully installed."
     else
         echo "Failed to install iTerm2 via Homebrew. Please try again."
