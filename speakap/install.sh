@@ -36,6 +36,12 @@ else
     echo "Git is already installed"
 fi
 
+if [ ! -d "~/projects/Speakap-API" ]; then
+    echo "Repository is not cloned. Proceeding with cloning..."
+    mkdir "~/projects/Speakap-API"
+    git clone git@github.com:SpeakapBV/Speakap-API.git ~/projects/Speakap-API
+fi
+
 
 if [ -d "/Applications/PhpStorm.app" ]; then
     echo "Bitwarden is already installed."
