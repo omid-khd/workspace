@@ -153,7 +153,7 @@ else
 
     # Install zsh-autosuggestions using Oh My Zsh
     echo "Installing zsh-autosuggestions..."
-    git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
     # Verify installation
     if [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
