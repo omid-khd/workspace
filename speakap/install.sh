@@ -145,6 +145,26 @@ else
     fi
 fi
 
+# Check if zsh-autosuggestions is already installed
+if [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+    echo "zsh-autosuggestions is already installed."    exit 0
+else
+    echo "zsh-autosuggestions is not installed. Proceeding with installation..."
+
+    # Install zsh-autosuggestions using Oh My Zsh
+    echo "Installing zsh-autosuggestions..."
+    git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+
+    # Verify installation
+    if [ -d "$ZSH_CUSTOM/plugins/zsh-autosuggestions" ]; then
+        echo "zsh-autosuggestions has been successfully installed."
+    else
+        echo "Failed to install zsh-autosuggestions. Please try again."
+        exit 1
+    fi
+fi
+
+
 if command -v chroma &>/dev/null ; then
     echo "Chroma is already installed."
 else 
