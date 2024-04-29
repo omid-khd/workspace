@@ -145,12 +145,26 @@ else
     fi
 fi
 
+if command -v chroma &>/dev/null ; then
+    echo "Chroma is already installed."
+else 
+    echo "Chroma is not installed. Proceeding with installation..."
+    echo "Installing Chroma..."
+    brew install chroma
+
+    if brew list --formula | grep -q "chroma"; then
+        echo "Chroma has been successfully installed"
+    else
+        echo "Failed to install Chroma via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
 if command -v atuin &>/dev/null ; then
     echo "Atuin is already installed."
 else
     echo "Atuin is not installed. Proceeding with installation..."
 
-    # Install Atuin using Homebrew
     echo "Installing Atuin..."
     curl https://raw.githubusercontent.com/atuinsh/atuin/main/install.sh | bash
 
