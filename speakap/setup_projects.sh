@@ -49,8 +49,18 @@ if ! directory_exists "$target_directory"; then
     create_directory "$target_directory"
 fi
 
-clone_repository "$target_directory/Speakap-API" "git@github.com:SpeakapBV/Speakap-API.git"
-setup_project "$target_directory/Speakap-API"
+if ! directory_exists "$target_directory/Speakap-Judge"; then
+    clone_repository "$target_directory/Speakap-Judge" "git@github.com:SpeakapBV/Speakap-Judge.git"
+fi
+
+if ! directory_exists "$target_directory/Speakap-Deployment"; then
+    clone_repository "$target_directory/Speakap-Deployment" "git@github.com:SpeakapBV/Speakap-Deployment.git"
+fi
+
+if ! directory_exists "$target_directory/Speakap-API"; then
+    clone_repository "$target_directory/Speakap-API" "git@github.com:SpeakapBV/Speakap-API.git"
+    setup_project "$target_directory/Speakap-API"
+fi
 
 # if [ ! -d "$project_path/Speakap-API" ]; then
 #     echo "Repository is not cloned. Proceeding with cloning..."
