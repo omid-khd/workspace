@@ -68,7 +68,7 @@ else
 fi
 
 # Install zsh-autosuggestions using Oh My Zsh
-if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+if [ -d ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions ]; then
     echo "zsh-autosuggestions is already installed."
 else
     echo "zsh-autosuggestions is not installed. Proceeding with installation..."
