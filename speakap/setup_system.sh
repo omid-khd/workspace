@@ -118,6 +118,24 @@ else
     fi
 fi
 
+# Install Opencode
+if command -v opencode &>/dev/null ; then
+    echo "Opencode is already installed."
+else
+    echo "Opencode is not installed. Proceeding with installation..."
+
+    echo "Installing Opencode..."
+    brew install opencode
+
+    # Verify installation
+    if brew list --formula | grep -q "opencode"; then
+        echo "Opencode has been successfully installed."
+    else
+        echo "Failed to install Opencode via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
 # Install Bat
 if brew list --formula | grep -q "bat"; then
     echo "bat is already installed."
@@ -151,28 +169,45 @@ else
     fi
 fi
 
-# Install PHP 8.2
-if brew list --formula | grep -q "php@8.2"; then
-    echo "PHP 8.2 is already installed."
+# Install PHP 8.3
+if brew list --formula | grep -q "php@8.3"; then
+    echo "PHP 8.3 is already installed."
 else
-    echo "PHP 8.2 is not installed. Proceeding with installation..."
-    echo "Installing php8.2 via Homebrew..."
-    brew install php@8.2
+    echo "PHP 8.3 is not installed. Proceeding with installation..."
+    echo "Installing php8.3 via Homebrew..."
+    brew install php@8.3
 
-    if brew list --formula | grep -q "php@8.2"; then
+    if brew list --formula | grep -q "php@8.3"; then
         brew install imagemagick
         brew install pkg-config
-        brew link --force php@8.2
+        brew link --force php@8.3
         pecl install xdebug-3.3.1 imagick redis
-        echo "PHP 8.2 has been successfully installed."
+        echo "PHP 8.3 has been successfully installed."
     else
-        echo "Failed to install PHP 8.2 via Homebrew. Please try again."
+        echo "Failed to install PHP 8.3 via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
+# Install GitHub Desktop
+if [ -d "/Applications/GitHub Desktop.app" ]; then
+    echo "GitHub Desktop is already installed."
+else
+    echo "GitHub Desktop is not installed. Proceeding with installation..."
+
+    echo "Installing GitHub Desktop via Homebrew..."
+    brew install --cask github
+
+    if brew list --cask | grep -q "github"; then
+        echo "GitHub Desktop has been successfully installed."
+    else
+        echo "Failed to install GitHub Desktop via Homebrew. Please try again."
         exit 1
     fi
 fi
 
 # Install Bitwarden
-if [ -d "/Applications/PhpStorm.app" ]; then
+if [ -d "/Applications/Bitwarden.app" ]; then
     echo "Bitwarden is already installed."
 else
     echo "Bitwarden is not installed. Proceeding with installation..."
@@ -214,6 +249,23 @@ else
 
     if [ -d "/Applications/Google Chrome.app" ]; then
         echo "Google Chrome has been successfully installed."
+    else
+        echo "Failed to install Google Chrome via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
+# Install Firefox
+if [ -d "/Applications/Firefox.app" ]; then
+    echo "Firefox is already installed."
+else
+    echo "Firefox is not installed. Proceeding with installation..."
+
+    echo "Installing Firefox via Homebrew..."
+    brew install --cask firefox
+
+    if [ -d "/Applications/Firefox.app" ]; then
+        echo "Firefox has been successfully installed."
     else
         echo "Failed to install Google Chrome via Homebrew. Please try again."
         exit 1
@@ -335,6 +387,24 @@ else
         echo "devToys has been successfully installed."
     else
         echo "Failed to install devToys via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+fi
+
+# Install glow
+if brew list --cask | grep -q "glow"; then
+    echo "glow is already installed."
+else
+    echo "glow is not installed. Proceeding with installation..."
+    echo "Installing glow via Homebrew..."
+    brew install glow
+
+    # Verify installation
+    if brew list --cask | grep -q "glow"; then
+        echo "glow has been successfully installed."
+    else
+        echo "Failed to install glow via Homebrew. Please try again."
         exit 1
     fi
 fi

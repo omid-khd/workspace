@@ -85,14 +85,12 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aliases git colorize colored-man-pages composer docker-compose zsh-autosuggestions zsh-bat)
+plugins=(aliases git colorize colored-man-pages composer docker-compose zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
-source ~/.zplug/init.zsh
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-export GOPATH=$HOME/.go
-export COMPOSE_FILE_PATH="/Users/omid/projects/Speakap-API/docker/compose/local/docker-compose.yaml"
+export DOCKER_COMPOSE_FILE="$HOME/projects/Speakap-API/docker/compose/local/docker-compose.yaml"
+export WORKER="worker"
 
 # User configuration
 
@@ -119,62 +117,78 @@ export COMPOSE_FILE_PATH="/Users/omid/projects/Speakap-API/docker/compose/local/
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias api="cd /Users/omid/projects/Speakap-API"
-alias deployment="cd /Users/omid/projects/Speakap-Deployment"
-alias dup="docker-compose -f $COMPOSE_FILE_PATH up -d"
-alias ddn="docker-compose -f $COMPOSE_FILE_PATH stop"
-alias bsh="docker-compose -f $COMPOSE_FILE_PATH exec worker_1 bash"
-alias cat="bat"
+alias api="cd $HOME/projects/Speakap-API"
+alias deployment="cd $HOME/projects/Speakap-Deployment"
+alias dup="docker compose -f $DOCKER_COMPOSE_FILE up -d"
+alias ddn="docker compose -f $DOCKER_COMPOSE_FILE stop"
+alias bsh="docker compose -f $DOCKER_COMPOSE_FILE exec $WORKER bash"
+alias cat="bat --paging=never"
 alias less="cless"
 alias phpstorm="open -na PhpStorm.app"
+alias markdown="glow"
+alias copy="pbcopy"
 
 function restart_workers() {
-	docker-compose -f $COMPOSE_FILE_PATH restart worker_1 worker_2 fpm
-}
-
-function cc(){
-	echo $'fpm\nworker_1\nworker_2' | xargs -I% -n1 -P2 docker-compose -f $COMPOSE_FILE_PATH exec -T % bash -c "rm -rf var/cache/* && echo $'test\ndev\nprod' | xargs -n 1 -P 3 php -dmemory_limit=-1 bin/console c:c -e; chmod -R 777 var/cache"; restart_workers;
+    docker compose -f $DOCKER_COMPOSE_FILE restart $WORKER fpm worker-messenger worker-messenger-test
 }
 
 function lf() {
-	docker-compose -f $COMPOSE_FILE_PATH exec fpm bash -c "bin/dloadFixtures.sh"
+	docker compose -f $DOCKER_COMPOSE_FILE exec $WORKER sh -c "bin/dloadFixtures.sh"
 }
 
 function bd(){
  FILENAME=$1
  if [[ -n "$FILENAME" ]]; then
-	docker-compose -f $COMPOSE_FILE_PATH exec fpm bash -c "XDEBUG_CONFIG=\"idekey=PHPSTORM\" PHP_IDE_CONFIG=\"serverName=*.dev.speakap.nl\" LOG_LEVEL=debug php -dmemory_limit=-1 -dxdebug.remote_enable=1 -dxdebug.remote_autostart=1 -dxdebug.remote_host=host.docker.internal bin/behat $FILENAME --format=pretty"
+	docker compose -f $DOCKER_COMPOSE_FILE exec fpm sh -c "XDEBUG_CONFIG=\"idekey=PHPSTORM\" PHP_IDE_CONFIG=\"serverName=*.dev.speakap.nl\" LOG_LEVEL=debug php -dmemory_limit=-1 -derror_reporting='E_ALL & ~E_DEPRECATED & ~E_STRICT' -dxdebug.remote_enable=1 -dxdebug.remote_autostart=1 -dxdebug.remote_host=host.docker.internal -dassert.exception=0 bin/behat $FILENAME --stop-on-failure --format pretty --xdebug"
 else
 	echo "File name required"
 fi
 }
 
 function backup_db() {
-	docker-compose -f $COMPOSE_FILE_PATH exec mariadb bash -c "mysqldump -u root -p123456 speakap_api > dump.sql"
+	docker compose -f $DOCKER_COMPOSE_FILE exec mariadb sh -c "mysqldump -u root -p123456 speakap_api > dump.sql"
 }
 
 function restore_db {
-	docker-compose -f $COMPOSE_FILE_PATH exec mariadb bash -c "mysql -u root -p123456 speakap_api < dump.sql"
+	docker compose -f $DOCKER_COMPOSE_FILE exec mariadb sh -c "mysql -u root -p123456 speakap_api < dump.sql"
 }
 
 function restore_redis {
-	docker-compose -f $COMPOSE_FILE_PATH exec worker_1 bash -c "php -dmemory_limit=-1 bin/console doctrine:fixtures:load --group=irreversible --append"
+	docker compose -f $DOCKER_COMPOSE_FILE exec worker sh -c "php -d memory_limit=-1 bin/console doctrine:fixtures:load --group=irreversible --append -e test"
 }
 function ccl {
-	api && rm -rf var/cache/* && echo $'test\ndev\nprod' | xargs -n 1 -P 3 php -dmemory_limit=-1 bin/console c:c -e
+	api && rm -rf var/cache/* && echo dev prod test | tr ' ' '\n' | xargs -n 1 -P 3 php -d memory_limit=-1 bin/console c:c -e
+}
+function hostip(){
+	echo $(ifconfig en0 | grep 'inet' | cut -d: -f2 | awk '{print $2}')
 }
 
-ssh-add > /dev/null 2>&1
+ssh-add ~/.ssh/id_ed25519 > /dev/null 2>&1
+ssh-add ~/.ssh/id_rsa_speakapvpn --apple-use-keychain > /dev/null 2>&1
 
-# >>>> Vagrant command completion (start)
-fpath=(/opt/vagrant/embedded/gems/gems/vagrant-2.4.1/contrib/zsh $fpath)
-compinit
-# <<<<  Vagrant command completion (end)
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 eval "$(atuin init zsh --disable-up-arrow)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export GPG_TTY=$(tty)
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(~/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
+
+
+export PATH="$HOME/.antigravity/antigravity/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+
+# opencode
+export PATH=$HOME/.opencode/bin:$PATH
+
+# Created by `pipx` on 2026-04-21 18:52:47
+export PATH="$PATH:$HOME/.local/bin"
+
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
