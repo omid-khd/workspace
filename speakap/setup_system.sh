@@ -118,6 +118,24 @@ else
     fi
 fi
 
+# Install Lefthook
+if command -v lefthook &>/dev/null ; then
+    echo "Lefthook is already installed."
+else
+    echo "Lefthook is not installed. Proceeding with installation..."
+
+    echo "Installing Lefthook..."
+    brew install lefthook
+
+    # Verify installation
+    if brew list --formula | grep -q "lefthook"; then
+        echo "Lefthook has been successfully installed."
+    else
+        echo "Failed to install Lefthook via Homebrew. Please try again."
+        exit 1
+    fi
+fi
+
 # Install Opencode
 if command -v opencode &>/dev/null ; then
     echo "Opencode is already installed."
